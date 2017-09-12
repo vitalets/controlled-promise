@@ -1,4 +1,4 @@
-# Pendings
+# controlled-promise
 
 [![Build Status](https://travis-ci.org/vitalets/pendings.svg?branch=master)](https://travis-ci.org/vitalets/pendings)
 [![npm](https://img.shields.io/npm/v/pendings.svg)](https://www.npmjs.com/package/pendings)
@@ -6,19 +6,19 @@
 
 > Better control of JavaScript [Promises]
 
-This is a wrapping library over [Promises] giving you more control of promise lifecycle. 
+This is a wrapping library over [Promises] providing control of promise lifecycle. 
 It is especially useful for promises in event-based code where you need to store `resolve` / `reject`
 callbacks and call them later.
-*ControlledPromise* allows to reduce boilerplate code and split business logic from promise manipulation.
+*ControlledPromise* allows to reduce boilerplate code and split out promise manipulation from business logic.
 
 ## Installation
 ```bash
-npm install pendings --save
+npm install controlled-promise --save
 ```
 
 ## Features
-* provides convenient access to `resolve` / `reject` callbacks
-* automatically returns existing promise while it is in pending state
+* provides access to `resolve` / `reject` callbacks when you need them
+* returns existing promise on all subsequent calls until promise is fulfilled / rejected
 * automatically rejects promise after configured `timeout`
 
 ## Usage
@@ -47,7 +47,7 @@ class Foo {
     }
 }    
 ```    
-The same class with [ControlledPromise](#ControlledPromise) is 3 lines of code:   
+The same class with [ControlledPromise](#ControlledPromise) is actually 3 lines of code:   
 ```js
 const ControlledPromise = require('controlled-promise');
 
