@@ -1,0 +1,16 @@
+{
+  "env": {
+    "mocha": true
+  },
+
+  "globals": {
+    "assert": false,
+    "srcPath": false
+  },
+
+  "rules": {
+    "max-statements": 0,
+    "max-lines": 0,
+    "max-nested-callbacks": 0
+  }
+}
