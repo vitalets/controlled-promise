@@ -147,7 +147,9 @@ class ControlledPromise {
    */
   timeout(ms, reason) {
     this._timeout = ms;
-    this._timeoutReason = reason;
+    if (reason !== undefined) {
+      this._timeoutReason = reason;
+    }
   }
 
   _createPromise(fn) {
