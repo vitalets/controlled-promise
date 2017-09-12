@@ -1,13 +1,10 @@
-'use strict';
-
 const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
+const ControlledPromise = require(process.env.TEST_LIB ? '../lib' : '../src');
 
 chai.use(chaiAsPromised);
 
+global.createControlledPromise = () => new ControlledPromise();
 global.assert = chai.assert;
-global.expect = chai.expect;
-global.srcPath = process.env.TEST_LIB ? '../../lib' : '../../src';
-
-// see: https://github.com/domenic/chai-as-promised/issues/173
-process.on('unhandledRejection', () => {});
+global.noop = () => {};
+global.wait = ms => new Promise(r => setTimeout(r, ms));

@@ -5,7 +5,9 @@
 
   "globals": {
     "assert": false,
-    "srcPath": false
+    "noop": false,
+    "wait": false,
+    "createControlledPromise": false
   },
 
   "rules": {
