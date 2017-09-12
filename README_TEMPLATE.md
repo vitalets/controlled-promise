@@ -6,10 +6,9 @@
 
 > Better control of JavaScript [Promises]
 
-This is a wrapping library over [Promises] providing control of promise lifecycle. 
-It is especially useful for promises in event-based code where you need to store `resolve` / `reject`
-callbacks and call them later.
-*ControlledPromise* allows to reduce boilerplate code and split out promise manipulation from business logic.
+A [Promise]-wrapping library providing advanced control of promise lifecycle. 
+It is especially useful for dealing with promises in event-based code.
+*ControlledPromise* allows to split out promise manipulation from business logic. It has tiny size and no dependencies.
 
 ## Installation
 ```bash
@@ -71,4 +70,5 @@ class Foo {
 ## License
 MIT @ [Vitaliy Potapov](https://github.com/vitalets)
 
+[Promise]: https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise
 [Promises]: https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise
