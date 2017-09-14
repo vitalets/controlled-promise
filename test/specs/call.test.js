@@ -67,4 +67,10 @@ describe('call', function () {
     const res = this.cp.call(() => Promise.reject(new Error('err')));
     return assert.isRejected(res, 'err');
   });
+
+  it('should provide access to promise inside fn', function () {
+    let p2;
+    const p1 = this.cp.call(() => p2 = this.cp.promise);
+    assert.equal(p1, p2);
+  });
 });

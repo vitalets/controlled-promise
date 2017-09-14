@@ -94,7 +94,8 @@ class ControlledPromise {
   call(fn) {
     if (!this._isPending) {
       this.reset();
-      this._createPromise(fn);
+      this._createPromise();
+      this._callFn(fn);
       this._createTimer();
     }
     return this._promise;
@@ -152,15 +153,11 @@ class ControlledPromise {
     }
   }
 
-  _createPromise(fn) {
+  _createPromise() {
     const internalPromise = new Promise((resolve, reject) => {
       this._isPending = true;
       this._resolve = resolve;
       this._reject = reject;
-      if (typeof fn === 'function') {
-        const result = fn();
-        this._tryAttachToPromise(result);
-      }
     });
     this._promise = internalPromise
       .then(value => this._handleFulfill(value), error => this._handleReject(error));
@@ -208,8 +205,21 @@ class ControlledPromise {
     this._clearTimer();
   }
 
+  _callFn(fn) {
+    if (typeof fn === 'function') {
+      let result;
+      try {
+        result = fn();
+      } catch (e) {
+        this.reject(e);
+      }
+      this._tryAttachToPromise(result);
+    }
+  }
+
   _tryAttachToPromise(p) {
-    if (p && typeof p.then === 'function') {
+    const isPromise = p && typeof p.then === 'function';
+    if (isPromise) {
       p.then(value => this.resolve(value), e => this.reject(e));
     }
   }
