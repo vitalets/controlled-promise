@@ -1,8 +1,4 @@
 describe('reject', function () {
-  beforeEach(function () {
-    this.cp = createControlledPromise();
-  });
-
   it('should reject in case of error in fn', function () {
     const res = this.cp.call(() => {
       throw new Error('err');

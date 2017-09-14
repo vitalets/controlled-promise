@@ -1,8 +1,4 @@
 describe('isPending', function () {
-  beforeEach(function () {
-    this.cp = createControlledPromise();
-  });
-
   it('should be false on new instance', function () {
     assert.notOk(this.cp.isPending);
   });

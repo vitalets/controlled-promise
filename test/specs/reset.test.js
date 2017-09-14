@@ -1,8 +1,4 @@
 describe('reset', function () {
-  beforeEach(function () {
-    this.cp = createControlledPromise();
-  });
-
   it('should reset resolved promise', function () {
     this.cp.call();
     this.cp.resolve();

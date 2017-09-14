@@ -18,7 +18,7 @@
     "lint-all": "eslint src test",
     "lint-staged": "lint-staged",
     "babel": "babel src --out-dir lib",
-    "test": "mocha test/**/*.test.js --require=test/setup.js",
+    "test": "mocha test/specs --require=test/setup.js",
     "test-lib": "TEST_LIB=1 npm t",
     "ci": "npm run code && npm run babel && npm run test-lib",
     "docs": "jsdoc2md --template README_TEMPLATE.md --files src/*.js > README.md",

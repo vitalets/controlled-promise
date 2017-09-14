@@ -1,8 +1,4 @@
 describe('value', function () {
-  beforeEach(function () {
-    this.cp = createControlledPromise();
-  });
-
   it('should return resolved value', function () {
     const p = this.cp.call();
     this.cp.resolve('foo');

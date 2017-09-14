@@ -1,8 +1,5 @@
-describe('call', function () {
-  beforeEach(function () {
-    this.cp = createControlledPromise();
-  });
 
+describe('call', function () {
   it('should return Promise', function () {
     const res = this.cp.call(noop);
     assert.instanceOf(res, Promise);

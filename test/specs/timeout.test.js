@@ -1,8 +1,4 @@
 describe('timeout', function () {
-  beforeEach(function () {
-    this.cp = createControlledPromise();
-  });
-
   it('should resolve before timeout', function () {
     this.cp.timeout(10);
     const res = this.cp.call();

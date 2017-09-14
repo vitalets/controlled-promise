@@ -1,8 +1,4 @@
 describe('resolve', function () {
-  beforeEach(function () {
-    this.cp = createControlledPromise();
-  });
-
   it('should resolve directly', function () {
     const res = this.cp.call(noop);
     this.cp.resolve('foo');
