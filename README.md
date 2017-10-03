@@ -8,12 +8,12 @@
 
 > Better control of JavaScript [Promises]
 
-A [Promise] wrapping library with advanced control of promise lifecycle. Allows to split out business logic
-from promise manipulation:
+A [Promise] wrapping library for advanced control of promise lifecycle. 
+Allows to split business logic from promise manipulation:
  
-* convenient access to `resolve` / `reject` callbacks
+* promisify event-emitters: easy access to `resolve` / `reject` callbacks
 * return existing promise while it is pending
-* auto-reject after configured `timeout`
+* auto-reject after configured timeout
 * tiny size and zero dependencies
 
 ## Installation
@@ -22,57 +22,57 @@ npm install controlled-promise --save
 ```
 
 ## Usage
-Example of class sending some data asynchronously and waiting for the response event.  
-With controlled promise:
+Example of wrapping event-emitter in promise:
 ```js
 const ControlledPromise = require('controlled-promise');
+const waiting = new ControlledPromise();
 
-class Foo {
-    constructor() {
-        this.sending = new ControlledPromise();
-    }
-    asyncRequest() {
-        // Send request and return promise. While promise is pending - it will be returned on all subsequent calls.
-        return this.sending.call(() => this.send({foo: 'bar'}));
-    }
-    onResponse(response) {
-        // Resolve promise when async response comes.
-        if (response) {
-          this.sending.resolve(response);
-        } else {
-          this.sending.reject(new Error('Empty response'));
-        }
-    }
+function waitSomeEvent() {
+  return waiting.call(() => {
+    const emitter = new EventEmitter();    
+    emitter.on('event', event => waiting.resolve(event));
+    emitter.on('error', error => waiting.reject(error));
+    emitter.runAsyncAction();
+  });
 }
+
+waitSomeEvent()
+  .then(...);
 ```
-The same class with native promise:
+
+The same with native promises:
 ```js
-class Foo {
-    constructor() {
-        this.promise = null;
-        this.resolve = null;
-        this.reject = null;
-    }
-    asyncRequest() {
-        if (this.promise) {
-            return this.promise;
-        }
-        this.promise = new Promise((resolve, reject) => {
-            this.resolve = resolve;
-            this.reject = reject;
-            this.send({foo: 'bar'});
-        });
-        return this.promise;
-    }
-    onResponse(response) {
-        if (response) {
-          this.resolve(response);
-        } else {
-          this.reject(new Error('Empty response'));
-        }
-        this.promise = null;
-    }
-}    
+let promise;
+let resolve;
+let reject;
+
+function waitSomeEvent() {
+  if (promise) { // If promise already pending - return it
+    return promise;
+  }
+  promise = new Promise((_resolve, _reject) => {
+    resolve = _resolve; // Store callbacks for future fulfillemnt
+    reject = _reject;
+    const emitter = new EventEmitter();    
+    emitter.on('event', event => onEvent(event));
+    emitter.on('error', error => onError(error));
+    emitter.runAsyncAction();
+  });
+  return promise;
+}
+
+function onEvent(event) {
+  resolve(event);
+  promise = null;
+}
+
+function onError(error) {
+  reject(error);
+  promise = null;
+}
+
+waitSomeEvent()
+  .then(...);
 ```
 
 ## API
@@ -200,6 +200,10 @@ Sets timeout to reject promise automatically.
 | ms | <code>Number</code> | delay in ms after that promise will be rejected automatically |
 | [reason] | <code>String</code> \| <code>Error</code> \| <code>function</code> | rejection value. If it is string or error - promise will be rejected with that error. If it is function - this function will be called after delay where you can manually resolve or reject promise via `.resolve() / .reject()` methods. |
 
+
+## Related
+* [event-to-promise](https://github.com/JsCommunity/event-to-promise)
+* [promise-events](https://github.com/yanickrochon/promise-events)
 
 ## License
 MIT @ [Vitaliy Potapov](https://github.com/vitalets)
