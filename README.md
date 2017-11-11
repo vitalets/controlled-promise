@@ -77,7 +77,7 @@ waitSomeEvent()
 
 <a name="ControlledPromise"></a>
 
-## ControlledPromise
+### ControlledPromise
 Controlled Promise.
 
 **Kind**: global class  
@@ -99,56 +99,56 @@ Controlled Promise.
 
 <a name="new_ControlledPromise_new"></a>
 
-### new ControlledPromise()
+#### new ControlledPromise()
 Creates controlled promise. In contrast to original Promise, it does not immediately call any function.
 Instead it has [.call()](#ControlledPromise+call) method for that and `resolve / reject` methods for
 resolving promise.
 
 <a name="ControlledPromise+promise"></a>
 
-### controlledPromise.promise ⇒ <code>Promise</code>
+#### controlledPromise.promise ⇒ <code>Promise</code>
 Returns promise itself.
 
 **Kind**: instance property of [<code>ControlledPromise</code>](#ControlledPromise)  
 <a name="ControlledPromise+value"></a>
 
-### controlledPromise.value ⇒ <code>\*</code>
+#### controlledPromise.value ⇒ <code>\*</code>
 Returns value with that promise was fulfilled (resolved or rejected).
 
 **Kind**: instance property of [<code>ControlledPromise</code>](#ControlledPromise)  
 <a name="ControlledPromise+isPending"></a>
 
-### controlledPromise.isPending ⇒ <code>Boolean</code>
+#### controlledPromise.isPending ⇒ <code>Boolean</code>
 Returns true if promise is pending.
 
 **Kind**: instance property of [<code>ControlledPromise</code>](#ControlledPromise)  
 <a name="ControlledPromise+isFulfilled"></a>
 
-### controlledPromise.isFulfilled ⇒ <code>Boolean</code>
+#### controlledPromise.isFulfilled ⇒ <code>Boolean</code>
 Returns true if promise is fulfilled.
 
 **Kind**: instance property of [<code>ControlledPromise</code>](#ControlledPromise)  
 <a name="ControlledPromise+isRejected"></a>
 
-### controlledPromise.isRejected ⇒ <code>Boolean</code>
+#### controlledPromise.isRejected ⇒ <code>Boolean</code>
 Returns true if promise rejected.
 
 **Kind**: instance property of [<code>ControlledPromise</code>](#ControlledPromise)  
 <a name="ControlledPromise+isSettled"></a>
 
-### controlledPromise.isSettled ⇒ <code>Boolean</code>
+#### controlledPromise.isSettled ⇒ <code>Boolean</code>
 Returns true if promise fulfilled or rejected.
 
 **Kind**: instance property of [<code>ControlledPromise</code>](#ControlledPromise)  
 <a name="ControlledPromise+isCalled"></a>
 
-### controlledPromise.isCalled ⇒ <code>Boolean</code>
+#### controlledPromise.isCalled ⇒ <code>Boolean</code>
 Returns true if promise already called via `.call()` method.
 
 **Kind**: instance property of [<code>ControlledPromise</code>](#ControlledPromise)  
 <a name="ControlledPromise+call"></a>
 
-### controlledPromise.call(fn) ⇒ <code>Promise</code>
+#### controlledPromise.call(fn) ⇒ <code>Promise</code>
 This method executes `fn` and returns promise. While promise is pending all subsequent calls of `.call(fn)`
 will return the same promise. To fulfill that promise you can use `.resolve() / .reject()` methods.
 
@@ -160,7 +160,7 @@ will return the same promise. To fulfill that promise you can use `.resolve() / 
 
 <a name="ControlledPromise+resolve"></a>
 
-### controlledPromise.resolve([value])
+#### controlledPromise.resolve([value])
 Resolves pending promise with specified `value`.
 
 **Kind**: instance method of [<code>ControlledPromise</code>](#ControlledPromise)  
@@ -171,7 +171,7 @@ Resolves pending promise with specified `value`.
 
 <a name="ControlledPromise+reject"></a>
 
-### controlledPromise.reject([value])
+#### controlledPromise.reject([value])
 Rejects pending promise with specified `value`.
 
 **Kind**: instance method of [<code>ControlledPromise</code>](#ControlledPromise)  
@@ -182,13 +182,13 @@ Rejects pending promise with specified `value`.
 
 <a name="ControlledPromise+reset"></a>
 
-### controlledPromise.reset()
+#### controlledPromise.reset()
 Resets to initial state.
 
 **Kind**: instance method of [<code>ControlledPromise</code>](#ControlledPromise)  
 <a name="ControlledPromise+timeout"></a>
 
-### controlledPromise.timeout(ms, [reason])
+#### controlledPromise.timeout(ms, [reason])
 Sets timeout to reject promise automatically.
 
 **Kind**: instance method of [<code>ControlledPromise</code>](#ControlledPromise)  
@@ -197,7 +197,6 @@ Sets timeout to reject promise automatically.
 | --- | --- | --- |
 | ms | <code>Number</code> | delay in ms after that promise will be rejected automatically |
 | [reason] | <code>String</code> \| <code>Error</code> \| <code>function</code> | rejection value. If it is string or error - promise will be rejected with that error. If it is function - this function will be called after delay where you can manually resolve or reject promise via `.resolve() / .reject()` methods. |
-
 
 ## Related
 * [event-to-promise](https://github.com/JsCommunity/event-to-promise)
