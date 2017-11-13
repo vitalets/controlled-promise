@@ -23,12 +23,12 @@
     "test-installed": "node scripts/install-local && LIB_PATH=.installed/node_modules/controlled-promise npm t",
     "ci": "npm run code && npm run babel && npm run test-lib",
     "docs": "node scripts/docs",
-    "release": "npm run code && npm test && npm version $VER && npm publish && git push --follow-tags --no-verify",
+    "prerelease": "npm run code && npm test && npm run babel && npm run test-lib && npm run test-installed",
+    "release": "npm version $VER && npm publish && git push --follow-tags --no-verify",
     "release-patch": "VER=patch npm run release",
     "release-minor": "VER=minor npm run release",
     "precommit": "npm run lint-staged && npm t",
-    "prepush": "npm run code && npm t",
-    "prepublish": "npm run babel && npm run test-lib && npm run test-installed"
+    "prepush": "npm run code && npm t"
   },
   "lint-staged": {
     "{src,test}/**/*.js": "eslint"
