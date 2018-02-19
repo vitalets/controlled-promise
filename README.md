@@ -20,59 +20,21 @@ npm install controlled-promise --save
 ```
 
 ## Usage
-Example of wrapping event-emitter in promise:
 ```js
 const ControlledPromise = require('controlled-promise');
-const waiting = new ControlledPromise();
 
-function waitSomeEvent() {
-  return waiting.call(() => {
-    const emitter = new EventEmitter();    
-    emitter.on('event', event => waiting.resolve(event));
-    emitter.on('error', error => waiting.reject(error));
-    emitter.runAsyncAction();
-  });
-}
+// Create controlled promise
+const cp = new ControlledPromise();
 
-waitSomeEvent()
-  .then(...);
+// Call asynchronous function. Returns promise wich `resolve / reject` callbacks are stored in `cp`.
+const promise = cp.call(() => someAsyncFn());
+
+// Resolve promise later via cp.resolve()
+cp.resolve();
+
+// OR reject promise later via cp.reject()
+cp.reject(error);
 ```
-
-The same with native promises:
-```js
-let promise;
-let resolve;
-let reject;
-
-function waitSomeEvent() {
-  if (promise) { // If promise already pending - return it
-    return promise;
-  }
-  promise = new Promise((_resolve, _reject) => {
-    resolve = _resolve; // Store callbacks for future fulfillemnt
-    reject = _reject;
-    const emitter = new EventEmitter();    
-    emitter.on('event', event => onEvent(event));
-    emitter.on('error', error => onError(error));
-    emitter.runAsyncAction();
-  });
-  return promise;
-}
-
-function onEvent(event) {
-  resolve(event);
-  promise = null;
-}
-
-function onError(error) {
-  reject(error);
-  promise = null;
-}
-
-waitSomeEvent()
-  .then(...);
-```
-
 ## API
 
 <a name="ControlledPromise"></a>
