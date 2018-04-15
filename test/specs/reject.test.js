@@ -1,27 +1,27 @@
 describe('reject', function () {
-  it('should reject in case of error in fn', function () {
+  it('should reject in case of error in fn', async function () {
     const res = this.cp.call(() => {
       throw new Error('err');
     });
-    return assert.isRejected(res, 'err');
+    await assertRejected(res, 'err');
   });
 
-  it('should reject directly', function () {
+  it('should reject directly', async function () {
     const res = this.cp.call(noop);
     this.cp.reject(new Error('err'));
-    return assert.isRejected(res, 'err');
+    await assertRejected(res, 'err');
   });
 
-  it('should reject inside fn', function () {
+  it('should reject inside fn', async function () {
     const res = this.cp.call(() => this.cp.reject(new Error('err')));
-    return assert.isRejected(res, 'err');
+    await assertRejected(res, 'err');
   });
 
-  it('should keep first value if rejected twice', function () {
+  it('should keep first value if rejected twice', async function () {
     const res = this.cp.call(noop);
     this.cp.reject(new Error('foo'));
     this.cp.reject(new Error('bar'));
-    return assert.isRejected(res, 'foo');
+    await assertRejected(res, 'foo');
   });
 
   it('should do nothing for reject without call', function () {

@@ -8,23 +8,24 @@ describe('isPending', function () {
     assert.ok(this.cp.isPending);
   });
 
-  it('should be false after fulfill', function () {
+  it('should be false after fulfill', async function () {
     const p = this.cp.call();
     this.cp.resolve('foo');
-    return assert.isFulfilled(p)
-      .then(() => assert.notOk(this.cp.isPending));
+    await p;
+    assert.notOk(this.cp.isPending);
   });
 
-  it('should be true after resolve with pending promise', function () {
+  it('should be true after resolve with pending promise', async function () {
     this.cp.call();
     this.cp.resolve(new Promise(noop));
-    return wait(10).then(() => assert.ok(this.cp.isPending));
+    await wait(10);
+    assert.ok(this.cp.isPending);
   });
 
-  it('should be false after reject', function () {
+  it('should be false after reject', async function () {
     const p = this.cp.call();
     this.cp.reject('foo');
-    return assert.isRejected(p)
-      .then(() => assert.notOk(this.cp.isPending));
+    await assertRejected(p);
+    assert.notOk(this.cp.isPending);
   });
 });

@@ -7,7 +7,8 @@
     "assert": false,
     "noop": false,
     "wait": false,
-    "createControlledPromise": false
+    "safeReject": false,
+    "assertRejected": false
   },
 
   "rules": {

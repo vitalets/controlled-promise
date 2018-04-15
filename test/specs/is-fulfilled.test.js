@@ -8,16 +8,17 @@ describe('isFulfilled', function () {
     assert.notOk(this.cp.isFulfilled);
   });
 
-  it('should be true after resolve with non promise', function () {
+  it('should be true after resolve with non promise', async function () {
     const p = this.cp.call();
     this.cp.resolve('foo');
-    return assert.isFulfilled(p)
-      .then(() => assert.ok(this.cp.isFulfilled));
+    await p;
+    assert.ok(this.cp.isFulfilled);
   });
 
-  it('should be false after resolve with pending promise', function () {
+  it('should be false after resolve with pending promise', async function () {
     this.cp.call();
     this.cp.resolve(new Promise(noop));
-    return wait(10).then(() => assert.notOk(this.cp.isFulfilled));
+    await wait(10);
+    assert.notOk(this.cp.isFulfilled);
   });
 });

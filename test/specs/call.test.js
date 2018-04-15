@@ -23,49 +23,44 @@ describe('call', function () {
     assert.equal(p1, p2);
   });
 
-  it('should return new promise for call after resolve', function () {
+  it('should return new promise for call after resolve', async function () {
     const p1 = this.cp.call(noop);
     this.cp.resolve();
-    return assert.isFulfilled(p1)
-      .then(() => {
-        const p2 = this.cp.call(noop);
-        assert.notEqual(p1, p2);
-      });
+    await p1;
+    const p2 = this.cp.call(noop);
+    assert.notEqual(p1, p2);
   });
 
-  it('should return new promise for call after reject', function () {
+  it('should return new promise for call after reject', async function () {
     const p1 = this.cp.call(noop);
     this.cp.reject();
-    return assert.isRejected(p1)
-      .then(() => {
-        const p2 = this.cp.call(noop);
-        assert.notEqual(p1, p2);
-      });
+    await safeReject(p1);
+    const p2 = this.cp.call(noop);
+    assert.notEqual(p1, p2);
   });
 
   it('should return new promise for call after reset', function () {
     const p1 = this.cp.call(noop);
-    p1.catch(() => {
-    });
+    safeReject(p1);
     this.cp.reset();
     const p2 = this.cp.call(noop);
     assert.notEqual(p1, p2);
   });
 
-  it('should allow to call without fn', function () {
-    const res = this.cp.call();
+  it('should allow to call without fn', async function () {
+    const p = this.cp.call();
     this.cp.resolve('foo');
-    return assert.eventually.equal(res, 'foo');
+    assert.equal(await p, 'foo');
   });
 
-  it('should attach to promise returned by fn (resolve)', function () {
-    const res = this.cp.call(() => Promise.resolve('foo'));
-    return assert.eventually.equal(res, 'foo');
+  it('should attach to promise returned by fn (resolve)', async function () {
+    const p = this.cp.call(() => Promise.resolve('foo'));
+    assert.equal(await p, 'foo');
   });
 
-  it('should attach to promise returned by fn (reject)', function () {
-    const res = this.cp.call(() => Promise.reject(new Error('err')));
-    return assert.isRejected(res, 'err');
+  it('should attach to promise returned by fn (reject)', async function () {
+    const p = this.cp.call(() => Promise.reject(new Error('err')));
+    await assertRejected(p, 'err');
   });
 
   it('should provide access to promise inside fn', function () {

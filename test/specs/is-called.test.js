@@ -8,18 +8,18 @@ describe('isCalled', function () {
     assert.ok(this.cp.isCalled);
   });
 
-  it('should be true after fulfill', function () {
+  it('should be true after fulfill', async function () {
     const p = this.cp.call();
     this.cp.resolve();
-    return assert.isFulfilled(p)
-      .then(() => assert.ok(this.cp.isCalled));
+    await p;
+    assert.ok(this.cp.isCalled);
   });
 
-  it('should be true after reject', function () {
+  it('should be true after reject', async function () {
     const p = this.cp.call();
     this.cp.reject();
-    return assert.isRejected(p)
-      .then(() => assert.ok(this.cp.isCalled));
+    await assertRejected(p);
+    assert.ok(this.cp.isCalled);
   });
 
   it('should be false after reset', function () {

@@ -7,9 +7,10 @@ describe('reset', function () {
     assert.equal(this.cp.isPending, false);
   });
 
-  it('should reject pending promise', function () {
+  it('should reject pending promise', async function () {
     const p = this.cp.call(noop);
     this.cp.reset();
-    return assert.isRejected(p, 'Promise rejected by reset');
+    await assertRejected(p, 'Promise rejected by reset');
+    // assert.equal(this.cp.isRejected, false);
   });
 });

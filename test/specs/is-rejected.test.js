@@ -8,25 +8,25 @@ describe('isRejected', function () {
     assert.notOk(this.cp.isRejected);
   });
 
-  it('should be true after manual reject', function () {
+  it('should be true after manual reject', async function () {
     const p = this.cp.call();
     this.cp.reject();
-    return assert.isRejected(p)
-      .then(() => assert.ok(this.cp.isRejected));
+    await assertRejected(p);
+    assert.ok(this.cp.isRejected);
   });
 
-  it('should be true after reject by error in fn', function () {
+  it('should be true after reject by error in fn', async function () {
     const p = this.cp.call(() => {
       throw new Error('err');
     });
-    return assert.isRejected(p)
-      .then(() => assert.ok(this.cp.isRejected));
+    await assertRejected(p, 'err');
+    assert.ok(this.cp.isRejected);
   });
 
-  it('should be true after resolve with rejected promise', function () {
+  it('should be true after resolve with rejected promise', async function () {
     const p = this.cp.call();
     this.cp.resolve(Promise.reject('err'));
-    return assert.isRejected(p)
-      .then(() => assert.ok(this.cp.isRejected));
+    await assertRejected(p, 'err');
+    assert.ok(this.cp.isRejected);
   });
 });
