@@ -1,6 +1,6 @@
 {
   "name": "controlled-promise",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Better control of JavaScript promises",
   "author": {
     "name": "Vitaliy Potapov",
