@@ -34,7 +34,7 @@ describe('call', function () {
   it('should return new promise for call after reject', async function () {
     const p1 = this.cp.call(noop);
     this.cp.reject();
-    await safeReject(p1);
+    safeReject(p1);
     const p2 = this.cp.call(noop);
     assert.notEqual(p1, p2);
   });

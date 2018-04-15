@@ -19,6 +19,7 @@ class ControlledPromise {
     this._timer = null;
     this._timeout = 0;
     this._timeoutReason = 'Promise rejected by timeout';
+    this._resetReason = 'Promise rejected by reset';
   }
 
   /**
@@ -95,8 +96,8 @@ class ControlledPromise {
     if (!this._isPending) {
       this.reset();
       this._createPromise();
-      this._callFn(fn);
       this._createTimer();
+      this._callFn(fn);
     }
     return this._promise;
   }
@@ -108,7 +109,13 @@ class ControlledPromise {
    */
   resolve(value) {
     if (this._isPending) {
-      this._resolve(value);
+      if (isPromise(value)) {
+        this._tryAttachToPromise(value);
+      } else {
+        this._settle(value);
+        this._isFulfilled = true;
+        this._resolve(value);
+      }
     }
   }
 
@@ -119,6 +126,8 @@ class ControlledPromise {
    */
   reject(value) {
     if (this._isPending) {
+      this._settle(value);
+      this._isRejected = true;
       this._reject(value);
     }
   }
@@ -128,7 +137,7 @@ class ControlledPromise {
    */
   reset() {
     if (this._isPending) {
-      this.reject(new Error('Promise rejected by reset'));
+      this.reject(new Error(this._resetReason));
     }
     this._promise = null;
     this._isPending = false;
@@ -154,25 +163,11 @@ class ControlledPromise {
   }
 
   _createPromise() {
-    const internalPromise = new Promise((resolve, reject) => {
+    this._promise = new Promise((resolve, reject) => {
       this._isPending = true;
       this._resolve = resolve;
       this._reject = reject;
     });
-    this._promise = internalPromise
-      .then(value => this._handleFulfill(value), error => this._handleReject(error));
-  }
-
-  _handleFulfill(value) {
-    this._settle(value);
-    this._isFulfilled = true;
-    return this._value;
-  }
-
-  _handleReject(value) {
-    this._settle(value);
-    this._isRejected = true;
-    return Promise.reject(this._value);
   }
 
   _handleTimeout() {
@@ -207,22 +202,24 @@ class ControlledPromise {
 
   _callFn(fn) {
     if (typeof fn === 'function') {
-      let result;
       try {
-        result = fn();
+        const result = fn();
+        this._tryAttachToPromise(result);
       } catch (e) {
         this.reject(e);
       }
-      this._tryAttachToPromise(result);
     }
   }
 
   _tryAttachToPromise(p) {
-    const isPromise = p && typeof p.then === 'function';
-    if (isPromise) {
+    if (isPromise(p)) {
       p.then(value => this.resolve(value), e => this.reject(e));
     }
   }
+}
+
+function isPromise(p) {
+  return p && typeof p.then === 'function';
 }
 
 module.exports = ControlledPromise;

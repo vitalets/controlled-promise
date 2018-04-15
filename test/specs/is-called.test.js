@@ -11,6 +11,7 @@ describe('isCalled', function () {
   it('should be true after fulfill', async function () {
     const p = this.cp.call();
     this.cp.resolve();
+    assert.ok(this.cp.isCalled);
     await p;
     assert.ok(this.cp.isCalled);
   });
@@ -18,6 +19,7 @@ describe('isCalled', function () {
   it('should be true after reject', async function () {
     const p = this.cp.call();
     this.cp.reject();
+    assert.ok(this.cp.isCalled);
     await assertRejected(p);
     assert.ok(this.cp.isCalled);
   });

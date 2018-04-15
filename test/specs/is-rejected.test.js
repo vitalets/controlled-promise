@@ -11,6 +11,7 @@ describe('isRejected', function () {
   it('should be true after manual reject', async function () {
     const p = this.cp.call();
     this.cp.reject();
+    assert.ok(this.cp.isRejected);
     await assertRejected(p);
     assert.ok(this.cp.isRejected);
   });
@@ -19,13 +20,7 @@ describe('isRejected', function () {
     const p = this.cp.call(() => {
       throw new Error('err');
     });
-    await assertRejected(p, 'err');
     assert.ok(this.cp.isRejected);
-  });
-
-  it('should be true after resolve with rejected promise', async function () {
-    const p = this.cp.call();
-    this.cp.resolve(Promise.reject('err'));
     await assertRejected(p, 'err');
     assert.ok(this.cp.isRejected);
   });

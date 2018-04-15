@@ -11,6 +11,7 @@ describe('isSettled', function () {
   it('should be true after fulfill', async function () {
     const p = this.cp.call();
     this.cp.resolve();
+    assert.ok(this.cp.isSettled);
     await p;
     assert.ok(this.cp.isSettled);
   });
@@ -18,6 +19,7 @@ describe('isSettled', function () {
   it('should be true after reject', async function () {
     const p = this.cp.call();
     this.cp.reject();
+    assert.ok(this.cp.isSettled);
     await assertRejected(p);
     assert.ok(this.cp.isSettled);
   });
