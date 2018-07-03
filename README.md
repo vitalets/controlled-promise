@@ -4,15 +4,12 @@
 [![license](https://img.shields.io/npm/l/controlled-promise.svg)](https://www.npmjs.com/package/controlled-promise)
 <img align="right" src="https://user-images.githubusercontent.com/1473072/31122235-ad06e442-a843-11e7-8c7e-c24149b6eeda.png"/>
 
-> Better control of JavaScript [Promises]
-
 A [Promise] wrapping library for advanced control of promise lifecycle. 
 Allows to split business logic from promise manipulation:
  
-* promisify event-emitters: easy access to `resolve` / `reject` callbacks
-* return existing promise while it is pending
+* automatically store `resolve` / `reject` functions for future calls
+* returns existing promise while async operation is still pending
 * auto-reject after configured timeout
-* tiny size and zero dependencies
 
 ## Installation
 ```bash
