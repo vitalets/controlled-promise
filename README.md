@@ -7,8 +7,8 @@
 A [Promise] wrapping library for advanced control of promise lifecycle. 
 Allows to split business logic from promise manipulation:
  
-* automatically store `resolve` / `reject` functions for future calls
-* returns existing promise while async operation is still pending
+* automatically store `resolve` / `reject` functions for future call
+* return existing promise while async operation is still pending
 * auto-reject after configured timeout
 
 ## Installation
@@ -21,16 +21,17 @@ npm install controlled-promise --save
 const ControlledPromise = require('controlled-promise');
 
 // Create controlled promise
-const cp = new ControlledPromise();
+const controlledPromise = new ControlledPromise();
 
-// Call asynchronous function. Returns promise wich `resolve / reject` callbacks are stored in `cp`.
-const promise = cp.call(() => someAsyncFn());
+// Calls asynchronous function and returns promise. 
+// The `resolve / reject` functions can be called later as `controlledPromise.resolve() / controlledPromise.reject()`.
+const promise = controlledPromise.call(() => someAsyncFn());
 
 // Resolve promise later via cp.resolve()
-cp.resolve();
+controlledPromise.resolve();
 
 // OR reject promise later via cp.reject()
-cp.reject(error);
+controlledPromise.reject(error);
 ```
 ## API
 
